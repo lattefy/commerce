@@ -1,0 +1,320 @@
+### ----------------------------------------
+### Variables
+### ----------------------------------------
+
+@baseUrl = http://localhost:3001
+@supabaseUrl = https://bgvmkvrtnxhaujjuzxck.supabase.co
+@anonKey = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJndm1rdnJ0bnhoYXVqanV6eGNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNzU0NTMsImV4cCI6MjA4NzY1MTQ1M30.kwGgZkVrIwLvEO1-gaPcg13_ZdfgTsfByLXT05zNUFk
+@password = Hola1234
+@email = hola@gmail.com
+@accessToken = eyJhbGciOiJFUzI1NiIsImtpZCI6ImRkMDJkYTVkLTE4MGMtNDMzNS1iYmQ1LTYwZWM5MGM2YzBhOSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2Jndm1rdnJ0bnhoYXVqanV6eGNrLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJiNmViZjdjZC03ZjJiLTRiNmQtOGNkNy1mNzhlMTZmMWI3MTAiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzcyOTk0NTQ5LCJpYXQiOjE3NzI5OTA5NDksImVtYWlsIjoiaG9sYUBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImVtYWlsIiwicHJvdmlkZXJzIjpbImVtYWlsIl19LCJ1c2VyX21ldGFkYXRhIjp7ImVtYWlsIjoiaG9sYUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGhvbmVfdmVyaWZpZWQiOmZhbHNlLCJzdWIiOiJiNmViZjdjZC03ZjJiLTRiNmQtOGNkNy1mNzhlMTZmMWI3MTAifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJwYXNzd29yZCIsInRpbWVzdGFtcCI6MTc3Mjk5MDk0OX1dLCJzZXNzaW9uX2lkIjoiZTM2OWY5NDEtODJjNi00MWMxLWE0MmMtZTViNWRkYmY4OTRhIiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.dsHROXiLCKpkiueg9vudxHKxsCcpXOR2QC0Qp38R4AVyqqexM3wC9ddonUl9s5YTeFhPyLbo0HE6FiCdoDsy1Q
+
+
+### ----------------------------------------
+### 1️⃣ Get Supabase Access Token
+### ----------------------------------------
+
+POST {{supabaseUrl}}/auth/v1/token?grant_type=password
+apikey: {{anonKey}}
+Authorization: Bearer {{anonKey}}
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+
+### ----------------------------------------
+### 2️⃣ Call /me
+### ----------------------------------------
+
+GET {{baseUrl}}/me
+Authorization: Bearer {{accessToken}}
+
+
+### ----------------------------------------
+### 3️⃣ Request Store
+### ----------------------------------------
+
+POST {{baseUrl}}/stores/request
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Billy Burgers Punta Gorda",
+  "slug": "billy-burgers-punta-gorda"
+}
+
+
+### ----------------------------------------
+### 4️⃣ Approve Store (admin only)
+### ----------------------------------------
+
+PATCH {{baseUrl}}/admin/stores/fd3c2c92-959a-47fb-9da7-4fed7ce8f683/approve
+Authorization: Bearer {{accessToken}}
+
+
+### ----------------------------------------
+### 5️⃣ Get Store (public)
+### ----------------------------------------
+
+GET {{baseUrl}}/stores/churros-express
+
+
+### Get My Stores
+GET {{baseUrl}}/stores/my
+Authorization: Bearer {{accessToken}}
+
+
+### ----------------------------------------
+### 6️⃣ Me (with store info)
+### ----------------------------------------
+
+GET {{baseUrl}}/me
+Authorization: Bearer {{accessToken}}
+
+
+### ----------------------------------------
+### 7️⃣ Get Categories (public)
+### ----------------------------------------
+
+GET {{baseUrl}}/stores/billy-burgers-pocitos/categories
+
+
+### ----------------------------------------
+### 8️⃣ Create Category (owner/employee)
+### ----------------------------------------
+
+POST {{baseUrl}}/stores/billy-burgers-pocitos/categories
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Burgers",
+  "description": "Our signature burgers",
+  "sortOrder": 0
+}
+
+### Create subcategory
+
+POST {{baseUrl}}/stores/billy-burgers-pocitos/categories
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Veggie Burgers",
+  "parentId": "2f7f0527-53b2-42a2-9f4d-2cdb54e71e34",
+  "sortOrder": 0
+}
+
+
+### ----------------------------------------
+### 9️⃣ Get Products (public)
+### ----------------------------------------
+
+GET {{baseUrl}}/stores/churros-express/products
+
+
+### ----------------------------------------
+### 🔟 Get Single Product (public)
+### ----------------------------------------
+
+GET {{baseUrl}}/stores/billy-burgers-pocitos/products/e7e920e8-6188-45fa-af34-994063469266
+
+
+### ----------------------------------------
+### 1️⃣1️⃣ Create Product
+### ----------------------------------------
+
+POST {{baseUrl}}/stores/billy-burgers-pocitos/products
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Classic Burger",
+  "description": "Our signature beef burger",
+  "status": "AVAILABLE",
+  "sortOrder": 0,
+  "portions": [
+    { "name": "Single", "price": 350, "stock": 50, "isDefault": true },
+    { "name": "Double", "price": 490, "stock": 30 }
+  ],
+  "extras": [
+    { "name": "Extra cheese", "price": 50 },
+    { "name": "Bacon", "price": 80 }
+  ]
+}
+
+
+### ----------------------------------------
+### 1️⃣2️⃣ Update Product
+### ----------------------------------------
+
+PATCH {{baseUrl}}/stores/billy-burgers-pocitos/products/e7e920e8-6188-45fa-af34-994063469266
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "status": "AVAILABLE"
+}
+
+
+### ----------------------------------------
+### 1️⃣3️⃣ Create Order
+### ----------------------------------------
+
+POST {{baseUrl}}/stores/churros-express/orders
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "productId": "04ed0f6a-5819-4585-b602-576b93c36510",
+      "portionId": "9cf2d55a-3acc-4cdf-b88b-80cf0dc0a999",
+      "quantity": 1,
+      "extras": [
+        { "extraId": "05484e3f-13d9-4747-8891-bc7d07717470", "quantity": 1 }
+      ]
+    }
+  ],
+  "notes": "Con poca azucar."
+}
+
+
+### ----------------------------------------
+### 1️⃣4️⃣ Get Orders (staff only)
+### ----------------------------------------
+
+GET {{baseUrl}}/stores/billy-burgers-pocitos/orders
+Authorization: Bearer {{accessToken}}
+
+
+### ----------------------------------------
+### 1️⃣5️⃣ Update Order Status
+### ----------------------------------------
+
+PATCH {{baseUrl}}/stores/churros-express/orders/cb23353b-0867-479a-9224-54cee3e98237/status
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "status": "PAID"
+}
+
+
+### ----------------------------------------
+### 1️⃣6️⃣ Upsert Loyalty Settings (owner)
+### ----------------------------------------
+
+POST {{baseUrl}}/stores/billy-burgers-pocitos/loyalty/settings
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "pesosPerPoint": 20,
+  "maxPointsPerOrder": 500,
+  "pointsExpiryDays": 365
+}
+
+
+### ----------------------------------------
+### 1️⃣7️⃣ Get Rewards (public)
+### ----------------------------------------
+
+GET {{baseUrl}}/stores/billy-burgers-pocitos/loyalty/rewards
+
+
+### ----------------------------------------
+### 1️⃣8️⃣ Create Reward (staff)
+### ----------------------------------------
+
+POST {{baseUrl}}/stores/billy-burgers-pocitos/loyalty/rewards
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Free Coffee",
+  "description": "Redeem for a free coffee",
+  "type": "FIXED_POINTS",
+  "pointsCost": 100,
+  "discountValue": 15000
+}
+
+
+### ----------------------------------------
+### 1️⃣9️⃣ Get Balance
+### ----------------------------------------
+
+GET {{baseUrl}}/stores/billy-burgers-pocitos/loyalty/balance
+Authorization: Bearer {{accessToken}}
+
+
+### ----------------------------------------
+### 2️⃣0️⃣ Get History
+### ----------------------------------------
+
+GET {{baseUrl}}/stores/billy-burgers-pocitos/loyalty/history
+Authorization: Bearer {{accessToken}}
+
+
+### ----------------------------------------
+### 2️⃣1️⃣ Redeem Reward
+### ----------------------------------------
+
+POST {{baseUrl}}/stores/billy-burgers-pocitos/loyalty/redeem
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "rewardId": "6732f586-c297-4868-9623-455136a61f68"
+}
+
+
+### ----------------------------------------
+### 2️⃣2️⃣ Connect MP (owner) - open in browser
+### ----------------------------------------
+
+GET {{baseUrl}}/stores/billy-burgers-pocitos/payment/connect
+Authorization: Bearer {{accessToken}}
+
+
+### ----------------------------------------
+### 2️⃣3️⃣ Create Payment Preference
+### ----------------------------------------
+
+POST {{baseUrl}}/stores/billy-burgers-pocitos/payment/preference?orderId=1c6157f2-9339-49ce-ab94-d0182a6aafed
+Authorization: Bearer {{accessToken}}
+
+
+
+
+
+### Simulate MP Webhook
+POST {{baseUrl}}/payment/webhook
+Content-Type: application/json
+
+{
+  "type": "payment",
+  "data": {
+    "id": "FAKE_PAYMENT_ID"
+  }
+}
+
+### Simulate Webhook (TEST ONLY)
+POST {{baseUrl}}/payment/webhook/test
+Content-Type: application/json
+
+{
+  "orderId": "1c6157f2-9339-49ce-ab94-d0182a6aafed"
+}
+
+
+
+#---
+##
+### Admin: Get Pending Stores
+
+GET {{baseUrl}}/admin/stores/pending
+Authorization: Bearer {{accessToken}}

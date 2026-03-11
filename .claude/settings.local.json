@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la /Users/juanigomez/Desktop/Lattefy/update/backend/src/*.ts)"
+    ]
+  }
+}

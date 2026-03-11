@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Build
+dist/
+
+# Env
+.env
+.env*
+!.env.example
+
+# Native binaries
+*.node
+
+# OS
+.DS_Store
+
+# Prisma generated
+src/generated/prisma
