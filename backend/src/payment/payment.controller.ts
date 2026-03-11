@@ -148,7 +148,7 @@ export class PaymentController {
       },
     });
 
-    return res.redirect(`http://localhost:3000/dashboard/stores/${store.slug}/payments?mp=connected`);
+    return res.redirect(`${process.env.FRONTEND_URL}/dashboard/stores/${store.slug}/payments?mp=connected`);
   }
 
   // ── POST /payment/webhook ─────────────────────────────────
