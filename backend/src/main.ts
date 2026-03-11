@@ -6,7 +6,12 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: ['http://localhost:3000', 'https://lattefy.com', 'https://lattefy.com.uy'],
+    origin: [
+      'http://localhost:3000',
+      'https://lattefy.com',
+      'https://lattefy.com.uy',
+      'https://commerce-zeta-five-23.vercel.app',
+    ],
     credentials: true,
   });
 
