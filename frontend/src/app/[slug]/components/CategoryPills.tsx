@@ -24,8 +24,8 @@ export default function CategoryPills({
   }, [activeCategory]);
 
   return (
-    <div className="sticky top-14 z-30 bg-white border-b border-stone-100">
-      <div className="max-w-5xl mx-auto px-4 md:px-8">
+    <div className="sticky top-14 z-30 bg-white">
+      <div className="px-4 md:px-8">
         <div
           ref={pillsRef}
           className="flex gap-2 overflow-x-auto py-3"
@@ -36,10 +36,10 @@ export default function CategoryPills({
               key={cat.id}
               data-cat={cat.id}
               onClick={() => onSelect(cat.id)}
-              className={`shrink-0 text-sm px-4 py-1.5 rounded-full font-medium transition-all duration-200 ${
+              className={`shrink-0 text-sm px-5 py-2 rounded-full font-semibold transition-all duration-200 ${
                 activeCategory === cat.id
                   ? "bg-stone-900 text-white"
-                  : "bg-stone-100 text-stone-600 hover:bg-stone-200"
+                  : "bg-stone-100 text-stone-700 hover:bg-stone-200"
               }`}
             >
               {cat.name}

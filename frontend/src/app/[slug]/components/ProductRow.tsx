@@ -5,10 +5,13 @@ import { CldImage } from "next-cloudinary";
 export default function ProductRow({
   product,
   onClick,
+  storeOpen,
 }: {
   product: any;
   onClick: () => void;
+  storeOpen: boolean;
 }) {
+  const disabled = !storeOpen;
   const minPrice = product.portions?.length
     ? Math.min(...product.portions.map((p: any) => p.price))
     : 0;
@@ -16,42 +19,51 @@ export default function ProductRow({
 
   return (
     <button
-      onClick={onClick}
-      className="flex items-center gap-4 py-4 text-left w-full group hover:bg-stone-50 -mx-2 px-2 rounded-xl transition-colors"
+      onClick={disabled ? undefined : onClick}
+      disabled={disabled}
+      className={`flex items-stretch gap-3 w-full text-left rounded-2xl p-3 transition-all ${
+        disabled
+          ? "bg-stone-50 opacity-60 cursor-not-allowed"
+          : "bg-stone-100 hover:bg-stone-200 active:scale-[0.99]"
+      }`}
     >
-      <div className="flex-1 min-w-0">
-        <p className="font-semibold text-stone-900 text-sm">
-          {product.name}
-        </p>
-        {product.description && (
-          <p className="text-xs text-stone-400 mt-0.5 line-clamp-2 leading-relaxed">
-            {product.description}
-          </p>
-        )}
-        <p className="text-sm font-bold text-stone-800 mt-1.5">
-          {hasMultiple && (
-            <span className="text-xs font-normal text-stone-400 mr-1">desde</span>
-          )}
-          ${(minPrice / 100).toFixed(0)}
-        </p>
-      </div>
-
-      <div className="shrink-0 relative">
+      {/* Image */}
+      <div className="shrink-0 w-24 h-24 rounded-xl overflow-hidden bg-white flex items-center justify-center">
         {product.images?.[0] ? (
           <CldImage
             src={product.images[0].url}
             alt={product.name}
-            width={88}
-            height={88}
-            className="w-20 h-20 rounded-xl object-cover"
+            width={96}
+            height={96}
+            className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-20 h-20 rounded-xl bg-stone-100 flex items-center justify-center text-2xl">
-            🍽️
-          </div>
+          <div className="w-full h-full bg-white rounded-xl" />
         )}
-        <div className="absolute -bottom-2 -right-2 w-7 h-7 bg-stone-900 rounded-full flex items-center justify-center text-white text-lg font-light shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
-          +
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
+        <div>
+          <p className="font-semibold text-stone-900 text-base leading-tight">
+            {product.name}
+          </p>
+          {product.description && (
+            <p className="text-xs text-stone-400 mt-0.5 line-clamp-2 leading-relaxed">
+              {product.description}
+            </p>
+          )}
+        </div>
+
+        <div className="flex items-end justify-between mt-2">
+          <p className="text-base font-bold text-stone-900">
+            $ {(minPrice / 100).toFixed(0)}
+          </p>
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-lg font-light shrink-0 ${
+            disabled ? "bg-stone-300 text-stone-400" : "bg-stone-900 text-white"
+          }`}>
+            +
+          </div>
         </div>
       </div>
     </button>

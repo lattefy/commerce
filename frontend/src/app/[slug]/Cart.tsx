@@ -9,10 +9,12 @@ export default function Cart({
   slug,
   store,
   onClose,
+  storeOpen,
 }: {
   slug: string;
   store: any;
   onClose: () => void;
+  storeOpen: boolean;
 }) {
   const { items, removeItem, updateQuantity, clearCart, total, orderType, setOrderType } = useCart();
   const router = useRouter();
@@ -132,9 +134,19 @@ export default function Cart({
         <span className="text-xl font-bold text-stone-900">${(total / 100).toFixed(0)}</span>
       </div>
 
+      {!storeOpen && (
+        <p className="text-xs text-center text-red-500 font-medium -mb-2">
+          La tienda está cerrada
+        </p>
+      )}
       <button
-        onClick={handleGoToCheckout}
-        className="w-full bg-stone-900 text-white py-4 rounded-2xl text-sm font-bold hover:bg-stone-800 active:scale-[0.98] transition-all"
+        onClick={storeOpen ? handleGoToCheckout : undefined}
+        disabled={!storeOpen}
+        className={`w-full py-4 rounded-2xl text-sm font-bold transition-all ${
+          storeOpen
+            ? "bg-stone-900 text-white hover:bg-stone-800 active:scale-[0.98]"
+            : "bg-stone-200 text-stone-400 cursor-not-allowed"
+        }`}
       >
         Ir al checkout · ${(total / 100).toFixed(0)}
       </button>

@@ -45,23 +45,21 @@ export default function StoreHero({
           )}
         </div>
 
-        {/* Info */}
-        <div className="pt-12 pb-5">
+          {/* Status pill — floats above the info section */}
+        <span className={`absolute right-5 -top-4 flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full ${
+          open
+            ? "bg-emerald-50 text-emerald-600 border border-emerald-200"
+            : "bg-red-50 text-red-500 border border-red-200"
+        }`}>
+          <span className={`w-1.5 h-1.5 rounded-full ${open ? "bg-emerald-500" : "bg-red-500"}`} />
+          {open ? "Abierto" : "Cerrado"}
+        </span>
 
-          {/* Nombre + status en la misma línea */}
-          <div className="flex items-center justify-between mb-1">
-            <h1 className="text-2xl font-extrabold text-stone-900 tracking-tight">
-              {store.name}
-            </h1>
-            <span className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full ${
-              open
-                ? "bg-emerald-50 text-emerald-600 border border-emerald-200"
-                : "bg-red-50 text-red-500 border border-red-200"
-            }`}>
-              <span className={`w-1.5 h-1.5 rounded-full ${open ? "bg-emerald-500" : "bg-red-500"}`} />
-              {open ? "Abierto" : "Cerrado"}
-            </span>
-          </div>
+      {/* Info */}
+        <div className="pt-12 pb-5">
+          <h1 className="text-2xl font-extrabold text-stone-900 tracking-tight mb-1">
+            {store.name}
+          </h1>
 
           {store.description && (
             <p className="text-sm text-stone-500 mb-3">{store.description}</p>

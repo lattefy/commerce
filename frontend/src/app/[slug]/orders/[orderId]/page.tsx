@@ -39,7 +39,7 @@ export default function OrderConfirmationPage() {
   async function confirmPayment() {
     try {
       const token = await getToken();
-      await apiClient(`/${slug}/orders/${orderId}/confirm-payment`, {
+      await apiClient(`/stores/${slug}/orders/${orderId}/confirm-payment`, {
         method: "POST",
         token,
         body: JSON.stringify({ paymentId }),
@@ -55,7 +55,7 @@ export default function OrderConfirmationPage() {
   async function loadOrder() {
     try {
       const token = await getToken();
-      const data = await apiClient(`/${slug}/orders/${orderId}`, { token });
+      const data = await apiClient(`/stores/${slug}/orders/${orderId}`, { token });
       setOrder(data);
     } catch {
       // silenciar

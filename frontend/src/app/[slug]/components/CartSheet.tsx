@@ -8,11 +8,13 @@ export default function CartSheet({
   store,
   open,
   onClose,
+  storeOpen,
 }: {
   slug: string;
   store: any;
   open: boolean;
   onClose: () => void;
+  storeOpen: boolean;
 }) {
   if (!open) return null;
 
@@ -36,7 +38,7 @@ export default function CartSheet({
           </button>
         </div>
         <div className="overflow-y-auto flex-1 px-5 py-4">
-          <Cart slug={slug} store={store} onClose={onClose} />
+          <Cart slug={slug} store={store} onClose={onClose} storeOpen={storeOpen} />
         </div>
       </div>
     </div>

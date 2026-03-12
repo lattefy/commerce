@@ -101,32 +101,31 @@ export default function StorePage({ params }: { params: Promise<{ slug: string }
   ];
 
   return (
-    <div className="min-h-screen bg-stone-50">
+    <div className="min-h-screen bg-white">
       <StoreNavbar
         storeName={store.name}
         slug={slug}
         onCartClick={() => setCartOpen(true)}
       />
 
-      <div className="bg-white">
+      <div className="max-w-5xl mx-auto">
         <StoreHero store={store} open={open} />
         <CategoryPills
           categories={allCategories}
           activeCategory={activeCategory}
           onSelect={scrollToCategory}
         />
-      </div>
 
-      <div className="bg-stone-50">
-        <div className="max-w-5xl mx-auto px-4 md:px-8 pb-32">
+        <div className="px-4 md:px-8 pb-32">
           <div className="flex gap-8">
             {/* Products */}
             <div className="flex-1 min-w-0">
               <ProductList
                 categories={categories}
                 products={products}
-                onProductClick={setSelectedProduct}
+                onProductClick={(p) => { if (open) setSelectedProduct(p); }}
                 onActiveCategoryChange={handleActiveCategoryChange}
+                storeOpen={open}
               />
             </div>
 
@@ -139,7 +138,7 @@ export default function StorePage({ params }: { params: Promise<{ slug: string }
                     <h2 className="font-bold text-stone-900">Mi Carrito</h2>
                   </div>
                   <div className="px-5 py-4">
-                    <Cart slug={slug} store={store} onClose={() => {}} />
+                    <Cart slug={slug} store={store} onClose={() => {}} storeOpen={open} />
                   </div>
                 </div>
               </div>
@@ -149,7 +148,7 @@ export default function StorePage({ params }: { params: Promise<{ slug: string }
       </div>
 
       {/* Footer */}
-      <div className="text-center py-8 text-xs text-stone-300 font-medium tracking-wide bg-stone-50">
+      <div className="text-center py-8 text-xs text-stone-300 font-medium tracking-wide bg-white">
         POWERED BY <span className="font-bold text-stone-400">LATTEFY</span>
       </div>
 
@@ -160,6 +159,7 @@ export default function StorePage({ params }: { params: Promise<{ slug: string }
         store={store}
         open={cartOpen}
         onClose={() => setCartOpen(false)}
+        storeOpen={open}
       />
 
       {selectedProduct && (
