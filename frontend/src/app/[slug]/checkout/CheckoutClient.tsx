@@ -116,8 +116,7 @@ export default function CheckoutPage() {
       );
 
       clearCart();
-      // window.location.href = preference.sandboxInitPoint ?? preference.initPoint;
-      window.location.href = preference.initPoint;
+      window.location.href = preference.sandboxInitPoint ?? preference.initPoint;
     } catch (err: any) {
       setError(err.message);
       setLoading(false);
