@@ -85,7 +85,7 @@ export default async function PuntosPage() {
                   </div>
                 )}
                 <Link
-                  href={`/stores/${entry.store.slug}`}
+                  href={`/${entry.store.slug}`}
                   className="text-xs text-stone-400 hover:text-stone-600 transition-colors"
                 >
                   Ir a la tienda →

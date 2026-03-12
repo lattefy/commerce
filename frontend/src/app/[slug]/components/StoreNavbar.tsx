@@ -23,13 +23,14 @@ export default function StoreNavbar({
   async function handleLogout() {
     const supabase = createClient();
     await supabase.auth.signOut();
+    document.cookie = "lattefy-role=; path=/; max-age=0";
     router.push("/login");
   }
 
   const navItems = [
-    { label: "Inicio", href: `/stores/${slug}` },
-    { label: "Mis Pedidos", href: `/stores/${slug}/mis-pedidos` },
-    { label: "Mis Puntos", href: `/stores/${slug}/mis-puntos` },
+    { label: "Inicio", href: `/${slug}` },
+    { label: "Mis Pedidos", href: `/${slug}/mis-pedidos` },
+    { label: "Mis Puntos", href: `/${slug}/mis-puntos` },
     { label: "Mi Cuenta", href: `/perfil` },
   ];
 

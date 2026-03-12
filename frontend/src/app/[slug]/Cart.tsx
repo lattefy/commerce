@@ -28,7 +28,7 @@ export default function Cart({
 
   function handleGoToCheckout() {
     onClose();
-    router.push(`/stores/${slug}/checkout`);
+    router.push(`/${slug}/checkout`);
   }
 
   if (items.length === 0) {

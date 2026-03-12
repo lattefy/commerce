@@ -18,7 +18,7 @@ export default function TiendasClient({ stores }: { stores: any[] }) {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {stores.map((store: any) => (
-              <Link key={store.id} href={`/stores/${store.slug}`}>
+              <Link key={store.id} href={`/${store.slug}`}>
                 <div className="bg-white rounded-2xl overflow-hidden border border-stone-100 hover:shadow-md transition-shadow cursor-pointer h-full">
                   <div className="h-32 bg-stone-200 relative">
                     {store.branding?.coverUrl ? (

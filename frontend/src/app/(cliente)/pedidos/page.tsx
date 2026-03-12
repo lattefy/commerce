@@ -88,7 +88,7 @@ export default async function PedidosPage() {
                       ${(order.total / 100).toFixed(2)}
                     </p>
                     <Link
-                      href={`/stores/${order.store?.slug}`}
+                      href={`/${order.store?.slug}`}
                       className="text-xs text-stone-400 hover:text-stone-600 transition-colors mt-1 block"
                     >
                       Ver tienda →

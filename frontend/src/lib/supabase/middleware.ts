@@ -1,6 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+const CUSTOMER_ROUTES = ["/pedidos", "/puntos", "/perfil"];
+
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
@@ -26,16 +28,34 @@ export async function updateSession(request: NextRequest) {
   );
 
   const { data: { user } } = await supabase.auth.getUser();
+  const pathname = request.nextUrl.pathname;
+  const role = request.cookies.get("lattefy-role")?.value;
 
-  // Protect all routes under /dashboard and /admin
-  if (
-    !user &&
-    (request.nextUrl.pathname.startsWith("/dashboard") ||
-      request.nextUrl.pathname.startsWith("/admin"))
-  ) {
+  function redirectTo(path: string) {
     const url = request.nextUrl.clone();
-    url.pathname = "/login";
+    url.pathname = path;
     return NextResponse.redirect(url);
+  }
+
+  // /admin — must be authenticated and PLATFORM_ADMIN
+  if (pathname.startsWith("/admin")) {
+    if (!user) return redirectTo("/login");
+    if (role && role !== "PLATFORM_ADMIN") return redirectTo("/tiendas");
+  }
+
+  // /dashboard — must be authenticated
+  if (pathname.startsWith("/dashboard")) {
+    if (!user) return redirectTo("/login");
+  }
+
+  // Customer routes — must be authenticated
+  if (CUSTOMER_ROUTES.some((r) => pathname.startsWith(r))) {
+    if (!user) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/login";
+      url.searchParams.set("next", pathname);
+      return NextResponse.redirect(url);
+    }
   }
 
   return supabaseResponse;

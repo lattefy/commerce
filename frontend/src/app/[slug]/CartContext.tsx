@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useContext, useState, useCallback, useEffect } from "react";
 
 export interface CartItem {
   productId: string;
@@ -33,9 +33,42 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | null>(null);
 
-export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
-  const [orderType, setOrderType] = useState<OrderType>("PICKUP");
+function storageKey(slug: string) {
+  return `lattefy-cart-${slug}`;
+}
+
+export function CartProvider({ slug, children }: { slug: string; children: React.ReactNode }) {
+  const [items, setItems] = useState<CartItem[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const stored = localStorage.getItem(storageKey(slug));
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const [orderType, setOrderType] = useState<OrderType>(() => {
+    if (typeof window === "undefined") return "PICKUP";
+    try {
+      const stored = localStorage.getItem(`${storageKey(slug)}-orderType`);
+      return (stored as OrderType) ?? "PICKUP";
+    } catch {
+      return "PICKUP";
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(storageKey(slug), JSON.stringify(items));
+    } catch {}
+  }, [items, slug]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(`${storageKey(slug)}-orderType`, orderType);
+    } catch {}
+  }, [orderType, slug]);
 
   const addItem = useCallback((newItem: CartItem) => {
     setItems((prev) => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,8 @@ import { apiClient } from "@/lib/api";
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -36,7 +38,12 @@ export default function LoginPage() {
     try {
       const me = await apiClient("/me", { token: session?.access_token });
   
-      if (me.user?.globalRole === "PLATFORM_ADMIN") {
+      const role = me.user?.globalRole ?? "NORMAL";
+      document.cookie = `lattefy-role=${role}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
+
+      if (next) {
+        router.push(next);
+      } else if (role === "PLATFORM_ADMIN") {
         router.push("/admin");
       } else if (me.memberships?.length > 0) {
         router.push("/dashboard");

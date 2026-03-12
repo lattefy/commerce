@@ -47,7 +47,7 @@ export default function StorePage({ params }: { params: Promise<{ slug: string }
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        router.push(`/login?next=/stores/${slug}`);
+        router.push(`/login?next=/${slug}`);
         return;
       }
 

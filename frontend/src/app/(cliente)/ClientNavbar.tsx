@@ -1,20 +1,30 @@
 "use client";
 
 import { User, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 
 export default function ClientNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setIsAuthenticated(!!user);
+    });
+  }, [pathname]);
 
   async function handleLogout() {
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push("/login");
+    document.cookie = "lattefy-role=; path=/; max-age=0";
+    setIsAuthenticated(false);
+    router.push("/tiendas");
   }
 
   const navItems = [
@@ -28,29 +38,52 @@ export default function ClientNavbar() {
     <>
       <header className="fixed top-3 left-3 right-3 z-40">
         <div className="bg-white rounded-2xl shadow-lg px-5 h-16 flex items-center justify-between">
-          <button
-            onClick={() => setMenuOpen(true)}
-            className="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-stone-100 transition-colors"
-          >
-            <Menu className="w-5 h-5 text-stone-700" />
-          </button>
+          {isAuthenticated ? (
+            <button
+              onClick={() => setMenuOpen(true)}
+              className="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-stone-100 transition-colors"
+            >
+              <Menu className="w-5 h-5 text-stone-700" />
+            </button>
+          ) : (
+            <Link href="/tiendas" className="text-base font-bold text-stone-900">
+              Lattefy
+            </Link>
+          )}
 
           <span className="text-base font-bold text-stone-900 truncate max-w-[200px]">
             Lattefy
           </span>
 
-          <Link
-            href="/perfil"
-            className="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-stone-100 transition-colors"
-          >
-            <User className="w-5 h-5 text-stone-700" />
-          </Link>
+          {isAuthenticated ? (
+            <Link
+              href="/perfil"
+              className="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-stone-100 transition-colors"
+            >
+              <User className="w-5 h-5 text-stone-700" />
+            </Link>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link
+                href="/login"
+                className="text-sm font-medium text-stone-700 hover:text-stone-900 transition-colors px-3 py-1.5"
+              >
+                Ingresar
+              </Link>
+              <Link
+                href="/register"
+                className="text-sm font-medium bg-stone-900 text-white px-3 py-1.5 rounded-xl hover:bg-stone-800 transition-colors"
+              >
+                Registrarse
+              </Link>
+            </div>
+          )}
         </div>
       </header>
 
       <div className="h-20" />
 
-      {menuOpen && (
+      {isAuthenticated && menuOpen && (
         <div className="fixed inset-0 z-50">
           <div
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"

@@ -46,6 +46,7 @@ export default function PerfilClient({ user }: { user: any }) {
   async function handleLogout() {
     const supabase = createClient();
     await supabase.auth.signOut();
+    document.cookie = "lattefy-role=; path=/; max-age=0";
     router.push("/login");
   }
 

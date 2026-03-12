@@ -39,7 +39,7 @@ export default function OrderConfirmationPage() {
   async function confirmPayment() {
     try {
       const token = await getToken();
-      await apiClient(`/stores/${slug}/orders/${orderId}/confirm-payment`, {
+      await apiClient(`/${slug}/orders/${orderId}/confirm-payment`, {
         method: "POST",
         token,
         body: JSON.stringify({ paymentId }),
@@ -55,7 +55,7 @@ export default function OrderConfirmationPage() {
   async function loadOrder() {
     try {
       const token = await getToken();
-      const data = await apiClient(`/stores/${slug}/orders/${orderId}`, { token });
+      const data = await apiClient(`/${slug}/orders/${orderId}`, { token });
       setOrder(data);
     } catch {
       // silenciar
@@ -85,13 +85,13 @@ export default function OrderConfirmationPage() {
         )}
         <div className="flex flex-col gap-3 w-full max-w-xs mt-4">
           <button
-            onClick={() => router.push(`/stores/${slug}/mis-pedidos`)}
+            onClick={() => router.push(`/${slug}/mis-pedidos`)}
             className="w-full bg-white text-emerald-600 py-3 rounded-2xl text-sm font-bold hover:bg-emerald-50 transition-colors"
           >
             Ver mis pedidos
           </button>
           <button
-            onClick={() => router.push(`/stores/${slug}`)}
+            onClick={() => router.push(`/${slug}`)}
             className="w-full text-white/80 py-3 rounded-2xl text-sm font-medium hover:text-white transition-colors flex items-center justify-center gap-2"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -113,7 +113,7 @@ export default function OrderConfirmationPage() {
           Tu pago está siendo procesado. Te notificaremos cuando se confirme.
         </p>
         <button
-          onClick={() => router.push(`/stores/${slug}`)}
+          onClick={() => router.push(`/${slug}`)}
           className="w-full max-w-xs bg-white text-amber-600 py-3 rounded-2xl text-sm font-bold hover:bg-amber-50 transition-colors"
         >
           Volver al inicio
@@ -133,7 +133,7 @@ export default function OrderConfirmationPage() {
       </p>
       <div className="flex flex-col gap-3 w-full max-w-xs">
         <button
-          onClick={() => router.push(`/stores/${slug}`)}
+          onClick={() => router.push(`/${slug}`)}
           className="w-full bg-stone-900 text-white py-3 rounded-2xl text-sm font-bold hover:bg-stone-800 transition-colors"
         >
           Volver al inicio

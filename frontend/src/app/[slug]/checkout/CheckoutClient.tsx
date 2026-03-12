@@ -1,5 +1,3 @@
-"use client"
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -32,7 +30,7 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     if (items.length === 0) {
-      router.replace(`/stores/${slug}`);
+      router.replace(`/${slug}`);
       return;
     }
     if (isDelivery) loadAddresses();

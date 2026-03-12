@@ -294,9 +294,6 @@ export class PaymentController {
 
     const baseUrl = process.env.FRONTEND_URL ?? "http://localhost:3000";
 
-    console.log("FRONTEND_URL:", process.env.FRONTEND_URL);
-    console.log("baseUrl:", baseUrl);
-
     const preference = await this.paymentService.createPreference(
       store.paymentSettings.mpAccessToken,
       {
@@ -304,9 +301,9 @@ export class PaymentController {
         storeSlug: store.slug,
         items,
         backUrls: {
-          success: `${baseUrl}/stores/${store.slug}/orders/${order.id}?status=success`,
-          failure: `${baseUrl}/stores/${store.slug}/orders/${order.id}?status=failure`,
-          pending: `${baseUrl}/stores/${store.slug}/orders/${order.id}?status=pending`,
+          success: `${baseUrl}/${store.slug}/orders/${order.id}?status=success`,
+          failure: `${baseUrl}/${store.slug}/orders/${order.id}?status=failure`,
+          pending: `${baseUrl}/${store.slug}/orders/${order.id}?status=pending`,
         },
       },
     );
