@@ -115,7 +115,6 @@ export default function CheckoutPage() {
         { method: "POST", token }
       );
 
-      clearCart();
       window.location.href = preference.initPoint;
     } catch (err: any) {
       setError(err.message);

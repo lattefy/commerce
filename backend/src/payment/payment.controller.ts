@@ -198,21 +198,26 @@ export class PaymentController {
     const paymentId = String(body.data?.id);
     if (!paymentId) return { ok: true };
 
-    // Buscar si ya fue procesado por confirm-payment
+    // Si ya fue procesado por confirm-payment, ignorar
     const alreadyProcessed = await this.prisma.order.findFirst({
       where: { mpPaymentId: paymentId },
     });
     if (alreadyProcessed) return { ok: true };
 
-    // Buscar la tienda correcta por storeId en metadata del pago
-    // Para eso necesitamos el token — buscamos la orden por external_reference
-    // usando el token de la plataforma (válido para OAuth en producción)
+    // Buscar la tienda por mpUserId (user_id del webhook es el seller)
+    const mpUserId = String(body.user_id);
+    const paymentSettings = mpUserId
+      ? await this.prisma.storePaymentSettings.findFirst({
+          where: { mpUserId },
+        })
+      : null;
+
+    const accessToken = paymentSettings?.mpAccessToken ?? process.env.MP_ACCESS_TOKEN!;
+
     const response = await fetch(
       `https://api.mercadopago.com/v1/payments/${paymentId}`,
       {
-        headers: {
-          Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`,
-        },
+        headers: { Authorization: `Bearer ${accessToken}` },
       },
     );
 

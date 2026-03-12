@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { apiClient } from "@/lib/api";
+import { useCart } from "../../CartContext";
 import { CheckCircle, XCircle, Clock, ArrowLeft } from "lucide-react";
 
 export default function OrderConfirmationPage() {
@@ -14,6 +15,7 @@ export default function OrderConfirmationPage() {
   const status = searchParams.get("status");
   const paymentId = searchParams.get("payment_id");
 
+  const { clearCart } = useCart();
   const [state, setState] = useState<"loading" | "success" | "failure" | "pending">("loading");
   const [order, setOrder] = useState<any>(null);
   const [error, setError] = useState("");
@@ -44,6 +46,7 @@ export default function OrderConfirmationPage() {
         token,
         body: JSON.stringify({ paymentId }),
       });
+      clearCart();
       await loadOrder();
       setState("success");
     } catch (err: any) {
