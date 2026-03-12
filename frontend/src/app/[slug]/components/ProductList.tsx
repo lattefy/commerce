@@ -78,6 +78,7 @@ export default function ProductList({
                 key={product.id}
                 product={product}
                 onClick={() => onProductClick(product)}
+                storeOpen={storeOpen}
               />
             ))}
           </div>
